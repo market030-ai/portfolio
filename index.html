@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamran Shoukat — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --dark-bg: #0a0a0a;
+    --dark-surface: #111111;
+    --dark-card: #181818;
+    --text-main: #f0ede8;
+    --text-muted: #888;
+    --accent: #c9a84c;
+  }
+  [data-theme="light"] {
+    --dark-bg: #f5f2ee;
+    --dark-surface: #ffffff;
+    --dark-card: #ffffff;
+    --text-main: #1a1a1a;
+    --text-muted: #666;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--dark-bg); color: var(--text-main); transition: background 0.4s, color 0.4s; }
+
+  nav { position: fixed; top: 0; width: 100%; z-index: 999; background: rgba(10,10,10,0.85); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  [data-theme="light"] nav { background: rgba(245,242,238,0.9); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); letter-spacing: 1px; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .theme-btn { background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+  .theme-btn:hover { background: var(--gold); color: #000; }
+
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events: none; }
+  .avatar-wrap { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--gold); margin: 0 auto 1.5rem; overflow: hidden; background: var(--dark-card); display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: 0 0 40px rgba(201,168,76,0.2); }
+  .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-tag { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: #000; padding: 12px 28px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.5px; transition: all 0.2s; border: none; cursor: pointer; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--gold); padding: 12px 28px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 0.9rem; border: 1px solid var(--gold); transition: all 0.2s; cursor: pointer; }
+  .btn-outline:hover { background: rgba(201,168,76,0.1); transform: translateY(-2px); }
+
+  section { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; }
+  .section-label { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 3rem; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  @media(max-width:640px){ .about-grid { grid-template-columns: 1fr; } }
+  .about-text { font-size: 1rem; line-height: 1.9; color: var(--text-muted); }
+  .about-text strong { color: var(--text-main); }
+  .stats-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); font-weight: 700; }
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+  .skill-card { background: var(--dark-card); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 1.5rem; transition: all 0.3s; }
+  .skill-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(201,168,76,0.1); }
+  .skill-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .skill-card h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .skill-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+  .skill-bar-wrap { margin-top: 0.8rem; background: rgba(255,255,255,0.07); border-radius: 10px; height: 4px; overflow: hidden; }
+  .skill-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .project-card { background: var(--dark-card); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 1.8rem; transition: all 0.3s; }
+  .project-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .project-tag { display: inline-block; background: rgba(201,168,76,0.15); color: var(--gold); font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .project-card h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .project-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--gold), transparent); }
+  .exp-item { position: relative; margin-bottom: 2.5rem; }
+  .exp-item::before { content: ''; position: absolute; left: -2.4rem; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.5); }
+  .exp-year { font-size: 0.78rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .exp-item h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.3rem; }
+  .exp-item p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+  .social-section { text-align: center; padding: 4rem 2rem; }
+  .social-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .social-btn { display: flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.3s; border: none; cursor: pointer; }
+  .social-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .btn-fb { background: #1877F2; color: #fff; }
+  .btn-fb:hover { background: #0d6de0; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(24,119,242,0.4); }
+  .btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+  .btn-ig:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(220,39,67,0.4); }
+  .btn-tt { background: #010101; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+  .btn-tt:hover { background: #1c1c1c; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .btn-wa { background: #25D366; color: #fff; }
+  .btn-wa:hover { background: #1ebe5b; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
+
+  .contact-wrap { max-width: 600px; margin: 0 auto; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: 0.82rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .form-group input, .form-group textarea { width: 100%; background: var(--dark-card); border: 1px solid rgba(201,168,76,0.2); border-radius: 6px; padding: 12px 16px; color: var(--text-main); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; resize: vertical; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-group textarea { min-height: 120px; }
+  .submit-btn { width: 100%; background: var(--gold); color: #000; border: none; padding: 14px; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif; }
+  .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .wa-note { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.8rem; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(201,168,76,0.1); font-size: 0.82rem; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media(max-width:640px){
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    section { padding: 3.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+
+<nav>
+  <div class="nav-logo">KS</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="theme-btn" onclick="toggleTheme()">Light / Dark</button>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="avatar-wrap"><span>👤</span></div>
+    <p class="hero-tag">Video Editor & Digital Marketer</p>
+    <h1>Kamran <span>Shoukat</span></h1>
+    <p>Crafting scroll-stopping visuals and data-driven ad campaigns that turn views into revenue.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Hire Me</a>
+      <a href="#projects" class="btn-outline">View Work</a>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="fade-up">
+    <p class="section-label">Who I Am</p>
+    <h2 class="section-title">About Me</h2>
+  </div>
+  <div class="about-grid fade-up">
+    <div>
+      <p class="about-text">
+        Hi! I'm <strong>Kamran Shoukat</strong> — a passionate <strong>Video Editor</strong> and <strong>Digital Marketer</strong> based in Pakistan. I specialize in creating high-converting Facebook Ads, managing Shopify stores, and growing brands through smart social media marketing.<br><br>
+        My mission is to help businesses and freelance clients stand out in the digital space with compelling content and targeted advertising strategies.
+      </p>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Projects</div></div>
+        <div class="stat"><div class="stat-num">2+</div><div class="stat-label">Years Exp</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Client Focus</div></div>
+      </div>
+    </div>
+    <div class="about-text">
+      I believe great marketing is a blend of <strong>creativity and data</strong>. Whether it's a stunning video edit or a perfectly targeted ad campaign — every project I take on gets my full attention and expertise.<br><br>
+      Currently available for <strong>freelance projects</strong> on Upwork, Fiverr, and direct collaboration.
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="fade-up">
+    <p class="section-label">What I Do</p>
+    <h2 class="section-title">Skills</h2>
+  </div>
+  <div class="skills-grid fade-up">
+    <div class="skill-card">
+      <div class="skill-icon">🎬</div>
+      <h3>Video Editing</h3>
+      <p>Professional edits, reels, YouTube videos, and brand content that captivates audiences.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📢</div>
+      <h3>Facebook Ads</h3>
+      <p>High-ROI ad campaigns — from audience targeting to creative copy and A/B testing.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🛒</div>
+      <h3>Shopify</h3>
+      <p>Store setup, product listing, theme customization, and conversion optimization.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📱</div>
+      <h3>Social Media Marketing</h3>
+      <p>Growing brand presence on Instagram, TikTok, and Facebook with organic and paid strategies.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:88%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🎯</div>
+      <h3>Content Strategy</h3>
+      <p>Planning and executing content calendars that align with business goals and audience needs.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <h3>Analytics & Reporting</h3>
+      <p>Tracking ad performance, interpreting data, and optimizing campaigns for maximum results.</p>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:78%"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="fade-up">
+    <p class="section-label">My Work</p>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-grid fade-up">
+    <div class="project-card">
+      <span class="project-tag">Internship</span>
+      <h3>Deeswlle — Digital Marketing Intern</h3>
+      <p>Assisted in running paid ad campaigns, creating social content, and analysing performance metrics for client brands during my internship at Deeswlle.</p>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">Facebook Ads</span>
+      <h3>Ad Campaign Management</h3>
+      <p>Planned, launched, and optimized Facebook and Instagram ad campaigns for e-commerce clients — improving ROAS and reducing cost-per-click significantly.</p>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">Video Editing</span>
+      <h3>Short-Form Content Creation</h3>
+      <p>Produced engaging TikTok and Instagram Reels for multiple brands — scripting, editing, and optimizing for platform algorithms.</p>
+    </div>
+    <div class="project-card">
+      <span class="project-tag">Shopify</span>
+      <h3>E-Commerce Store Setup</h3>
+      <p>Set up and customized Shopify stores with product listings, payment gateways, and sales-focused landing pages for dropshipping clients.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="fade-up">
+    <p class="section-label">Journey</p>
+    <h2 class="section-title">Experience & Education</h2>
+  </div>
+  <div class="exp-timeline fade-up">
+    <div class="exp-item">
+      <p class="exp-year">2024 — Present</p>
+      <h3>Freelance Digital Marketer & Video Editor</h3>
+      <p>Working independently on Upwork, Fiverr, and direct clients — delivering video editing, Facebook Ads, and Shopify solutions.</p>
+    </div>
+    <div class="exp-item">
+      <p class="exp-year">2023 — 2024</p>
+      <h3>Digital Marketing Intern — Deeswlle</h3>
+      <p>Gained hands-on experience running ads, creating content strategies, and managing social media accounts for clients.</p>
+    </div>
+    <div class="exp-item">
+      <p class="exp-year">Education</p>
+      <h3>Digital Marketing & Social Media Strategy</h3>
+      <p>Self-trained and certified in Facebook Ads, video production, and e-commerce marketing through online courses and practical experience.</p>
+    </div>
+  </div>
+</section>
+
+<div class="social-section fade-up">
+  <p class="section-label" style="text-align:center">Find Me Online</p>
+  <h2 class="section-title" style="text-align:center">Social Media</h2>
+  <div class="social-btns">
+    <a href="https://www.facebook.com/profile.php?id=61573308021377" target="_blank" class="social-btn btn-fb">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.696 4.533-4.696 1.313 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.instagram.com/marketcall030/?hl=en" target="_blank" class="social-btn btn-ig">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.tiktok.com/@littlestarreels" target="_blank" class="social-btn btn-tt">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      TikTok
+    </a>
+    <a href="https://wa.me/923174815138?text=Hello%2C%20I%20am%20interested%20in%20your%20services" target="_blank" class="social-btn btn-wa">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<section id="contact" style="padding-bottom:6rem">
+  <div class="fade-up">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Contact Me</h2>
+  </div>
+  <div class="contact-wrap fade-up">
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" id="c-name" placeholder="e.g. Ali Hassan">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="c-email" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label>Service Needed</label>
+      <input type="text" id="c-service" placeholder="e.g. Video Editing, Facebook Ads...">
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="c-msg" placeholder="Tell me about your project..."></textarea>
+    </div>
+    <button class="submit-btn" onclick="sendToWhatsApp()">Send via WhatsApp</button>
+    <p class="wa-note">✓ Your message will open directly in WhatsApp</p>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:0.4rem">Kamran Shoukat — Video Editor & Digital Marketer</p>
+  <p>Made with dedication &amp; passion · Pakistan 🇵🇰</p>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const b = document.body;
+    b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+  }
+
+  function sendToWhatsApp() {
+    const name = document.getElementById('c-name').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const service = document.getElementById('c-service').value.trim();
+    const msg = document.getElementById('c-msg').value.trim();
+    if (!name || !msg) { alert('Please enter your name and message.'); return; }
+    const whatsappNum = '923174815138';
+    const text = `Hello Kamran! 👋\n\nName: ${name}\nEmail: ${email || 'N/A'}\nService: ${service || 'N/A'}\n\nMessage:\n${msg}`;
+    const url = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
